@@ -1,0 +1,167 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Courier New', Courier, monospace;
+  background-color: #333;
+  color: #eee;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  text-align: center;
+  margin-top: 0;
+}
+
+main {
+  max-width: 1000px;
+  margin-inline: auto;
+  padding: 1rem;
+}
+
+/* Game */
+.game {
+  --main-clr: #4caf50;
+  --main-bg-color: #212121;
+
+
+  --cell-text: #888;
+  --highlight-bg: #004d40;
+  --highlight-text: #8bc34a;
+  --player-text: #03a9f4;
+  --incorrect-text: #f44336;
+
+  --btn-text: #eee;
+  --btn-bg: #1b5e20;
+  --btn-current: #03a9f4;
+
+  --border: 1px solid var(--main-clr);
+  --border-wide: 3px solid var(--main-clr);
+
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 1rem;
+}
+.game__table {
+  position: relative;
+	display: grid;
+	grid-template-columns: repeat(9, 1fr);
+	grid-template-rows: repeat(9,1fr);
+	max-width: 360px;
+	aspect-ratio: 1;
+  border: var(--border-wide);
+  background-color: var(--main-bg-color);
+}
+.loading {
+  display: none;
+	position: absolute;
+	inset: 0;
+}
+.loading::after {
+  content: '';
+  display: block;
+  position: absolute;
+  background-color: hotpink;
+  width: 30px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  top: calc(50% - 15px);
+  left: 5%;
+}
+.loading[data-loading="true"] {
+  display: block;
+}
+.loading[data-loading="true"]::after {
+  animation: loading 3s ease-in-out alternate infinite;
+}
+@keyframes loading {
+  to {left: 80%;}
+  
+}
+
+.game__cell {
+	display: grid;
+	place-items: center;
+	font-size: 1.4rem;
+	font-weight: 700;
+  color: var(--cell-text);
+
+  user-select: none;
+  transition: background-color 200ms;
+}
+.game__cell:not([data-row="8"]) {
+  border-bottom: var(--border);
+}
+.game__cell:not([data-col="8"]) {
+  border-right: var(--border);
+}
+.game__cell[data-col="2"],
+.game__cell[data-col="5"] {
+  border-right: var(--border-wide);
+}
+.game__cell[data-row="2"],
+.game__cell[data-row="5"] {
+  border-bottom: var(--border-wide);
+}
+.game__cell.player_cell:hover {
+  backdrop-filter: brightness(2.5);
+}
+.game__cell.highlight {
+  backdrop-filter: brightness(1.4);
+}
+.game__cell.num_highlight {
+  background-color: var(--highlight-bg);
+  color: var(--highlight-text);
+}
+.game__cell.player_cell {
+  cursor: pointer;
+  color: var(--player-text);
+}
+.game__cell.incorrect_num {
+  color: var(--incorrect-text)
+}
+
+/* CONTROL */
+.num_buttons {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	justify-content: space-between;
+	height: 100%;
+}
+
+button {
+  display: block;
+  font-size: 1rem;
+  background-color: var(--btn-bg);
+  color: var(--btn-text);
+  padding: 0.4em 0.7em;
+  border: none;
+  border-radius: 0.1em;
+  cursor: pointer;
+  transition: background-color 200ms;
+  outline: none;
+}
+button:not(:disabled):hover,
+button:not(:disabled):focus-visible {
+  filter: brightness(1.3);
+}
+button:not(:disabled):active {
+  filter: brightness(1.6);
+}
+button.current {
+  background-color: var(--btn-current)
+}
+button:disabled {
+  color: #bbb;
+  background-color: #555;
+  cursor: not-allowed;
+}
+
+/* CORNER CONTROL */
+.corner_control {
+	position: fixed;
+	bottom: 1rem;
+	right: 1rem;
+}
